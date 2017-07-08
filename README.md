@@ -1,2 +1,2 @@
 # StratOs-XBee
-Python APIs for XBee
+APIs for XBee
