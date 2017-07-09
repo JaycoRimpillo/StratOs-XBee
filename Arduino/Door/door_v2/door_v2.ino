@@ -23,7 +23,7 @@ XBeeAddress64 Coordinator = XBeeAddress64(0x00000000, 0x00000000);
 #define ssTX 4
 SoftwareSerial nss(ssRX, ssTX);
 // Arduino Rx <--> Xbee Tx , Arduino Tx <--> Xbee Rx
-// Arduino pin3 <--> Xbee 4 ,  Arduino pin4 <--> Xbee 3
+// Arduino pin3 <--> Xbee DOUT ,  Arduino pin4 <--> Xbee DIN
 // XBeeResponse response = XBeeResponse();   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // create reusable response objects for responses we expect to handle
 ZBExplicitRxResponse explicitrx = ZBExplicitRxResponse();
