@@ -2,7 +2,7 @@ from StratOsXBee import *
 import time
 
 # StratOsXBee object
-myXB = StratOsXBee('COM7', 9600, 'DEBUG') # 3rd argument optional for logging (DEBUG or INFO)
+myXB = StratOsXBee('COM7', 9600, 'INFO') # 3rd argument optional for logging (DEBUG or INFO)
 
 
 # RAW ZDO Commands

@@ -160,13 +160,19 @@ class StratOsXBee(object):
 			self.logger.debug( "Cluster: " + str([ hex(ord(x)) for x in data["cluster"] ]) )
 			self.logger.debug( "Src_endpt: " + hex(ord(data["source_endpoint"])) + " Dest_endpt: " + hex(ord(data["dest_endpoint"])) )
 				
-			# "Normal" Digi Responses
+			# "Normal" Digi Responses (STOVE STUFF)
 			if data["profile"]=='\xC1\x05':
+				print "GOT STOVE DATA"
+				print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
+				#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
+				print "64-values:" + data["rf_data"]
+				 
+				
 				
 			
 			
 			# ZDO Responses (Profile = 0x0000)
-			if data["profile"]=='\x00\x00': 
+			elif data["profile"]=='\x00\x00': 
 				# ZDO Network Addr Resp
 				if data["cluster"]=='\x00\x13':
 					self.logger.info( 'A Device has joined the network. ' + 'MAC = ' +  str([ hex(ord(x)) for x in data["source_addr_long"] ]))
