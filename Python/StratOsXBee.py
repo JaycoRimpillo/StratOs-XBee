@@ -104,6 +104,8 @@ class StratOsXBee(object):
 		# Initialization functions
 		self.getCoordinatorInfo()	# Call this to get the self values
 		
+		self.StratOsFullSetup()	# call this to populate the components list, door list, light list, stove list
+		
 		
 		
 	#************************ START OF self.RX_Handler() **********
