@@ -9,7 +9,7 @@ myXB = StratOsXBee('COM7', 9600, 'INFO') # 3rd argument optional for logging (DE
 while True:
 	try:
 		time.sleep(0.001)
-		print "Enter a command: 0 = Full Setup, 1 = LightsON, 2 = LightsOFF, 3 = LightsTOGGLE, 4 = LockON, 5 = LockOFF"
+		print "Enter a command: 0 = Full Setup, 1 = LightsON, 2 = LightsOFF, 3 = LightsTOGGLE, 4 = LockON, 5 = LockOFF, 6 = GetLightStatus"
 		input = raw_input("")
 		
 		if input == '0':
@@ -30,6 +30,10 @@ while True:
 			#myXB.StratOsDoorON()	
 		elif input == '5':
 			myXB.StratOsDoorOFF()	
+		elif input == '6':
+			myXB.StratOsGetLightStatus()	
+		
+		
 	except KeyboardInterrupt:
 		
 		myXB.terminate()

@@ -383,9 +383,11 @@ class StratOsXBee(object):
 					self.logger.debug( 'Status: ' + hex(ord(data["rf_data"][5])) )
 					self.logger.debug( 'Data type: '+ hex(ord(data["rf_data"][6])) )   #0x10: logical
 					if ord(data["rf_data"][7])==0x0:
-						self.logger.debug( "Light is OFF" )
+						print "GOT BULB STATUS"
+						print "Light is OFF" 
 					elif rd(data["rf_data"][7])==0x1:
-						self.logger.debug( "Light is ON" )
+						print "GOT BULB STATUS"
+						print "Light is ON" 
 		
 						
 				elif data["cluster"]=='\x00\x06' and data["rf_data"][2]=='\x0B' and (data["rf_data"][3]=='\x00' or data["rf_data"][3]=='\x01' or data["rf_data"][3]=='\x02'):
@@ -616,7 +618,14 @@ class StratOsXBee(object):
 				data = '0'
 			)
 			
-			time.sleep(1)				
+			time.sleep(1)	
+
+	def StratOsGetLightStatus(self, num = 0):
+		if len(self.DoorList) != 0:
+			HAgetLightStatus(self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'])
+			
+			time.sleep(1)
+		
 		
 			
 	
