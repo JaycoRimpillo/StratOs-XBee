@@ -48,14 +48,13 @@ int mos = 7; // MOsfet gate
 
 // Timer global vars
 Timer t;
+int half_minute_flag = 0;
 
 // Global message vars
 char locked_Message[] = "The door is LOCKED";
 char unlocked_Message[] = "The door is UNLOCKED";
 // int doorStatus = 1; // 1 = locked, 0 = unlocked
 
-// ------------ DEBUG MODE ENABLE/DISABLE
-//#define DEBUG // Uncomment this line if want to automatically toggle lock/unlock every 5 seconds.
 
 void setup() {
          // slow clock to divide by 2
@@ -77,16 +76,32 @@ void setup() {
 
     // Timer
     // send door status every 60sec
-    t.every(60 * 1000, sendStatus);
+    t.every(30* 1000, sendStatus);
     
         Serial.println("Initialization all done!");
         delay(3000);
+		// Door default is LOCKED
+        digitalWrite(mos, HIGH);
         
 }
 
 void loop() {
-        // Door default is LOCKED
-        digitalWrite(mos, HIGH);
+        
+		
+		// Send status every minute
+		if(half_minute_flag == 2) {
+			Serial.println(locked_Message);
+			
+			// ZBExplicitTxRequest(XBeeAddress64 &addr64, uint16_t addr16, uint8_t broadcastRadius,
+			//  uint8_t option, uint8_t *payload, uint8_t payloadLength, uint8_t frameId, uint8_t srcEndpoint,
+			//  uint8_t dstEndpoint, uint16_t clusterId, uint16_t profileId);
+			ZBExplicitTxRequest zbtx = ZBExplicitTxRequest(Coordinator, 0x0000, 0x00,
+			  0x00, (uint8_t*)locked_Message, strlen(locked_Message), 0x01, 0xE8,
+			  0xE8, 0x0011, 0xC105);
+			xbee.send(zbtx);  // Send message "Door is locked"
+			
+			half_minute_flag = 0;
+		}
 
         // doing the read without a timer makes it non-blocking, so
         // you can do other stuff in loop() as well.
@@ -148,25 +163,7 @@ void loop() {
 
        // Detect key card for unlocking
        getID(); //
-
-        // DEBUG ONLY
-       #ifdef DEBUG
-       delay(5000);
-        Serial.println("Unlocking door for 5 seconds");
-        digitalWrite(mos, LOW);
-    
-        // ZBExplicitTxRequest(XBeeAddress64 &addr64, uint16_t addr16, uint8_t broadcastRadius,
-        //  uint8_t option, uint8_t *payload, uint8_t payloadLength, uint8_t frameId, uint8_t srcEndpoint,
-        //  uint8_t dstEndpoint, uint16_t clusterId, uint16_t profileId);
-        ZBExplicitTxRequest zbtx = ZBExplicitTxRequest(Coordinator, 0x0000, 0x00,
-          0x00, (uint8_t*)unlocked_Message, strlen(unlocked_Message), 0x01, 0xE8,
-          0xE8, 0x0011, 0xC105);
-        xbee.send(zbtx);  // Send message "Door is unlocked"
-        delay(5000);
-        Serial.println("Locking door for 5 seconds");
-       #endif
-       // END DEBUG
-     
+	        
      
      // Required update by the Timer library
      t.update();
@@ -177,19 +174,7 @@ void loop() {
 
 void sendStatus()
 {
-    // Send message to serial monitor
-    
-    Serial.println(locked_Message);
-
-    // ZBExplicitTxRequest(XBeeAddress64 &addr64, uint16_t addr16, uint8_t broadcastRadius,
-    //  uint8_t option, uint8_t *payload, uint8_t payloadLength, uint8_t frameId, uint8_t srcEndpoint,
-    //  uint8_t dstEndpoint, uint16_t clusterId, uint16_t profileId);
-    ZBExplicitTxRequest zbtx = ZBExplicitTxRequest(Coordinator, 0x0000, 0x00,
-      0x00, (uint8_t*)locked_Message, strlen(locked_Message), 0x01, 0xE8,
-      0xE8, 0x0011, 0xC105);
-    xbee.send(zbtx);
-    
-
+	half_minute_flag++;  // Set flag so that will send status through xbee inside void loop()
 }
       
 
@@ -222,6 +207,17 @@ void handleXbeeRxMessage(uint8_t *data, uint8_t length){
     xbee.send(zbtx);  // Send message "Door is unlocked"
     
     delay(7000); // 7 seconds of unlocked state
+	
+	// Door default is LOCKED
+    digitalWrite(mos, HIGH);
+	
+	// ZBExplicitTxRequest(XBeeAddress64 &addr64, uint16_t addr16, uint8_t broadcastRadius,
+    //  uint8_t option, uint8_t *payload, uint8_t payloadLength, uint8_t frameId, uint8_t srcEndpoint,
+    //  uint8_t dstEndpoint, uint16_t clusterId, uint16_t profileId);
+    zbtx = ZBExplicitTxRequest(Coordinator, 0x0000, 0x00,
+      0x00, (uint8_t*)locked_Message, strlen(locked_Message), 0x01, 0xE8,
+      0xE8, 0x0011, 0xC105);
+    xbee.send(zbtx);  // Send message "Door is locked"
   }
 }
 
@@ -296,6 +292,19 @@ uint8_t getID() {
     xbee.send(zbtx);  // Send message "Door is unlocked"
     
     delay(7000);
+	
+	// Door default is LOCKED
+    digitalWrite(mos, HIGH);
+		
+	// ZBExplicitTxRequest(XBeeAddress64 &addr64, uint16_t addr16, uint8_t broadcastRadius,
+    //  uint8_t option, uint8_t *payload, uint8_t payloadLength, uint8_t frameId, uint8_t srcEndpoint,
+    //  uint8_t dstEndpoint, uint16_t clusterId, uint16_t profileId);
+    zbtx = ZBExplicitTxRequest(Coordinator, 0x0000, 0x00,
+      0x00, (uint8_t*)locked_Message, strlen(locked_Message), 0x01, 0xE8,
+      0xE8, 0x0011, 0xC105);
+    xbee.send(zbtx);  // Send message "Door is locked"
+	
+	
   }
   
   // end StratOS
