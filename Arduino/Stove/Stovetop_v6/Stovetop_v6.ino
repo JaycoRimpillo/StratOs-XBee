@@ -14,12 +14,17 @@
 #define AVE 0x07
 #define INTHL 0x08
 #define TTHL 0x0E
-#define INT0 0x10
+//#define INT0 0x10
 #define T01L 0x80
 // #define AMG88_ADDR 0x69 // in 7bit. AD_SEL tied to VCC
 #define AMG88_ADDR 0x68		//Jayco: AD_SEL tied to GND
 #define ONEFPS	B00000000
 #define TENFPS	B00000001
+
+// ------------------------------- Clock Prescaler Stuff ----------------------
+// Include libraries needed for safer operation at lower clock freq (8MHz instead of 16MHz) at low voltage (3.3V instead of 5V)
+#include <avr/power.h> // Needed for clock_prescale_set
+
 
 
 // -------------------------------- XBee Stuff------------------------------------
@@ -45,10 +50,18 @@ XBeeResponse response = XBeeResponse();
 // create reusable response objects for responses we expect to handle
 // ZBRxResponse rx = ZBRxResponse();
 
+// ------------------------------- DEBUG MODE ENABLE/DISABLE ---------------------
+//#define DEBUG // Uncomment this define if you want to print a debug message that shows how many transmissions were sent since pwoerup
+int count = 1;
+
+
 
 
 void setup()
 {
+  // slow clock to divide by 2
+  clock_prescale_set (clock_div_2);
+	
 	// Initialize IRSensor
 	initIR();
 
@@ -107,8 +120,15 @@ void loop()
                                 Serial.print(",");
                         }
 		}
-
-		//Serial.println(Payload);
+		
+		#ifdef DEBUG
+		// Send number of transmissions sent instead of temperature values
+		//char *strcpy(char *dest, const char *src)
+		char DebugMsg[] = "This is a debug message. Number of transmissions sent since power up = ";
+		strcpy(Payload, DebugMsg);
+		itoa( count, tempstr, 10);
+		strcat(Payload, tempstr );
+		#endif		//Serial.println(Payload);
 		// ZBExplicitTxRequest(XBeeAddress64 &addr64, uint16_t addr16, uint8_t broadcastRadius,
 		//	uint8_t option, uint8_t *payload, uint8_t payloadLength, uint8_t frameId, uint8_t srcEndpoint,
 		//	uint8_t dstEndpoint, uint16_t clusterId, uint16_t profileId);
@@ -121,8 +141,8 @@ void loop()
 
 
 
-    delay(500);
-
+    delay(1000);
+	count++;
 }
 
 

@@ -164,14 +164,20 @@ class StratOsXBee(object):
 				
 			# "Normal" Digi Responses (STOVE STUFF)
 			if data["profile"]=='\xC1\x05':
-				print "GOT STOVE DATA"
-				print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
-				#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
-				print "64-values:" + data["rf_data"]
-				 
-				
-				
-			
+				for elem in self.ComponentsList:
+					if elem['NodeID'] == "StratOsStove":
+						print "GOT STOVE DATA"
+						print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
+						#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
+						print "64-values:" + data["rf_data"]
+					elif elem['NodeID'] == "StratOsDoor":
+						print "GOT DOOR STATUS"
+						print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
+						#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
+						print data["rf_data"]
+					else:
+						print "StratOs does not support this device yet"
+						
 			
 			# ZDO Responses (Profile = 0x0000)
 			elif data["profile"]=='\x00\x00': 
