@@ -541,7 +541,7 @@ class StratOsXBee(object):
 		self.LightsList = []
 		self.StoveList = []
 		self.DoorList = []
-		temp = self.ComponentsList.copy()
+		temp = self.ComponentsList
 		for elem in temp:
 			if elem.has_key('DeviceIDName'):
 				if elem['DeviceIDName'] == 'ONOFFLight':
