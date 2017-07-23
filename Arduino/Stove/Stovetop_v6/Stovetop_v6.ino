@@ -141,7 +141,7 @@ void loop()
 
 
 
-    delay(1000);
+    delay(8000);
 	count++;
 }
 

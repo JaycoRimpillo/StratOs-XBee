@@ -408,16 +408,16 @@ class StratOsXBee(object):
 					self.logger.debug( 'Status: ' + hex(ord(data["rf_data"][4])) )
 					ClusterCmd = ord(data["rf_data"][3])
 					if ClusterCmd == 0x0:
-						self.logger.debug( "Turn OFF cmd:" )
+						print( "Turn OFF cmd:" )
 					elif ClusterCmd == 0x1:
-						self.logger.debug( "Turn ON cmd:" )
+						print( "Turn ON cmd:" )
 					elif ClusterCmd == 0x2:
-						self.logger.debug( "TOGGLE cmd:"  )
+						print( "TOGGLE cmd:"  )
 					Status = ord(data["rf_data"][4])
 					if Status == 0x00:
-						self.logger.debug( "Success" )
+						print( "Success" )
 					else:
-						self.logger.debug( "Probably failed" )
+						print( "Probably failed" )
 						
 				
 					
