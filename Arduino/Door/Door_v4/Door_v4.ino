@@ -48,7 +48,7 @@ int mos = 7; // MOsfet gate
 
 // Timer global vars
 Timer t;
-int half_minute_flag = 0;
+volatile int half_minute_flag = 0; // MAKE SURE THIS IS VOLATILE!
 
 // Global message vars
 char locked_Message[] = "The door is LOCKED";
