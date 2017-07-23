@@ -2,13 +2,15 @@ from StratOsXBee import *
 import time
 
 # StratOsXBee object
-myXB = StratOsXBee('COM7', 9600) # 3rd argument optional for logging (DEBUG or INFO)
+myXB = StratOsXBee('COM7', 9600, 'INFO') # 3rd argument optional for logging (DEBUG or INFO)
 
 
 # Run until keyboard interrupt
 while True:
 	try:
 		time.sleep(0.001)
+			
+	except KeyboardInterrupt:
 		print "Enter a command: 0 = Full Setup, 1 = LightsON, 2 = LightsOFF, 3 = LightsTOGGLE, 4 = LockON, 5 = LockOFF, 6 = GetLightStatus"
 		input = raw_input("")
 		
@@ -31,12 +33,7 @@ while True:
 		elif input == '5':
 			myXB.StratOsDoorOFF()	
 		elif input == '6':
-			myXB.StratOsGetLightStatus()	
-		
-	except KeyboardInterrupt:
-		
-		myXB.terminate()
-		break
+			myXB.StratOsGetLightStatus()
 
 
 
