@@ -211,6 +211,8 @@ void handleXbeeRxMessage(uint8_t *data, uint8_t length){
 	// Door default is LOCKED
     digitalWrite(mos, HIGH);
 	
+	delay(2000); // Wait for door to actually lock
+	
 	// ZBExplicitTxRequest(XBeeAddress64 &addr64, uint16_t addr16, uint8_t broadcastRadius,
     //  uint8_t option, uint8_t *payload, uint8_t payloadLength, uint8_t frameId, uint8_t srcEndpoint,
     //  uint8_t dstEndpoint, uint16_t clusterId, uint16_t profileId);
@@ -295,6 +297,8 @@ uint8_t getID() {
 	
 	// Door default is LOCKED
     digitalWrite(mos, HIGH);
+	
+	delay(2000); // Wait for door to actually lock
 		
 	// ZBExplicitTxRequest(XBeeAddress64 &addr64, uint16_t addr16, uint8_t broadcastRadius,
     //  uint8_t option, uint8_t *payload, uint8_t payloadLength, uint8_t frameId, uint8_t srcEndpoint,
