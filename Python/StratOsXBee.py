@@ -642,7 +642,7 @@ class StratOsXBee(object):
 			print "No connected stove detector"
 		if len( self.DoorList ) == 0:
 			print "No connected door lock"
-		if len( self.LightsList ) == 0
+		if len( self.LightsList ) == 0:
 			print "No connected light bulb"
 			
 	
