@@ -162,21 +162,20 @@ class StratOsXBee(object):
 			self.logger.debug( "Cluster: " + str([ hex(ord(x)) for x in data["cluster"] ]) )
 			self.logger.debug( "Src_endpt: " + hex(ord(data["source_endpoint"])) + " Dest_endpt: " + hex(ord(data["dest_endpoint"])) )
 				
-			# "Normal" Digi Responses (STOVE STUFF)
+			# "Normal" Digi Responses (STOVE AND DOOR STUFF)
 			if data["profile"]=='\xC1\x05':
 				for elem in self.ComponentsList:
-					if elem['NodeID'] == "StratOsStove":
-						print "GOT STOVE DATA"
-						print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
-						#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
-						print "64-values:" + data["rf_data"]
-					elif elem['NodeID'] == "StratOsDoor":
-						print "GOT DOOR STATUS"
-						print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
-						#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
-						print data["rf_data"]
-					else:
-						print "StratOs does not support this device yet"
+					if elem['MAC'] == data["source_addr_long"]:
+						if elem.get('NodeID') == "StratOsStove":
+							print "GOT STOVE DATA"
+							print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
+							#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
+							print "64-values:" + data["rf_data"]
+						elif elem.get('NodeID') == "StratOsDoor":
+							print "GOT DOOR STATUS"
+							print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
+							#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
+							print data["rf_data"]
 						
 			
 			# ZDO Responses (Profile = 0x0000)
@@ -637,7 +636,14 @@ class StratOsXBee(object):
 			
 			time.sleep(1)
 		
-		
+	
+	def StratOsCheckComponentsList(self):
+		if len( self.StoveList ) == 0:
+			print "No connected stove detector"
+		if len( self.DoorList ) == 0:
+			print "No connected door lock"
+		if len( self.LightsList ) == 0
+			print "No connected light bulb"
 			
 	
 	
