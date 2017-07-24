@@ -583,6 +583,8 @@ class StratOsXBee(object):
 			self.HAturnLightON( self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'] )
 			
 			time.sleep(1)
+		else:
+			print "No connected light bulb"
 			
 	def StratOsLightOFF(self, num = 0):
 		if len(self.LightsList) != 0:
@@ -592,6 +594,8 @@ class StratOsXBee(object):
 			self.HAturnLightOFF( self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'] )
 			
 			time.sleep(1)
+		else:
+			print "No connected light bulb"
 	
 	def StratOsLightTOGGLE(self, num = 0):
 		if len(self.LightsList) != 0:
@@ -601,6 +605,9 @@ class StratOsXBee(object):
 			self.HAturnLightTOGGLE( self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'] )
 			
 			time.sleep(1)
+		else:
+			print "No connected light bulb"		
+		
 
 	def StratOsDoorON(self, num = 0):
 		if len(self.DoorList) != 0:
@@ -614,7 +621,9 @@ class StratOsXBee(object):
 				data = '1'
 			)
 			
-			time.sleep(1)			
+			time.sleep(1)
+		else:
+			print "No connected door lock"
 			
 	def StratOsDoorOFF(self, num = 0):
 		if len(self.DoorList) != 0:
@@ -629,12 +638,18 @@ class StratOsXBee(object):
 			)
 			
 			time.sleep(1)	
+		else:
+			print "No connected door lock"
+		
+		
 
 	def StratOsGetLightStatus(self, num = 0):
 		if len(self.DoorList) != 0:
 			HAgetLightStatus(self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'])
 			
 			time.sleep(1)
+		else:
+			print "No connected light bulb"
 		
 	
 	def StratOsCheckComponentsList(self):
