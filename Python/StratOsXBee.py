@@ -170,117 +170,118 @@ class StratOsXBee(object):
                                
                         # "Normal" Digi Responses (STOVE STUFF)
                         if data["profile"]=='\xC1\x05':
-								# Stove sent messages on dest_endpt xAA
-								if data["dest_endpoint"] == '\xAA':
-										print "Stove Stuff: GOT STOVE DATA"
-										#print "rf_data" + data["rf_data"]
-										#print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
-										#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
-										#print "64-values:" + data["rf_data"]
-										stove_data = data["rf_data"]
+				# Stove sent messages on dest_endpt xAA
+				if data["dest_endpoint"] == '\xAA':
+					print "Stove Stuff: GOT STOVE DATA"
+					#print "rf_data" + data["rf_data"]
+					#print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
+					#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
+					#print "64-values:" + data["rf_data"]
+					stove_data = data["rf_data"]
 
-										stove_data_pixcels = stove_data.strip()
-										sensor_segment = stove_data_pixcels.split(',')
-										sensor_segment = [ int(element) for element in sensor_segment ]
-										BRval = sensor_segment[0:4] + sensor_segment[8:12] + sensor_segment[16:20] + sensor_segment[24:28]
-										BLval = sensor_segment[4:8] + sensor_segment[12:16] + sensor_segment[20:24] + sensor_segment[28:32]
-										TRval = sensor_segment[32:36] + sensor_segment[40:44] + sensor_segment[48:52] + sensor_segment[56:60]
-										TLval = sensor_segment[36:40] + sensor_segment[44:48] + sensor_segment[52:56] + sensor_segment[60:64]
+					stove_data_pixcels = stove_data.strip()
+					sensor_segment = stove_data_pixcels.split(',')
+					sensor_segment = [ int(element) for element in sensor_segment ]
+					BRval = sensor_segment[0:4] + sensor_segment[8:12] + sensor_segment[16:20] + sensor_segment[24:28]
+					BLval = sensor_segment[4:8] + sensor_segment[12:16] + sensor_segment[20:24] + sensor_segment[28:32]
+					TRval = sensor_segment[32:36] + sensor_segment[40:44] + sensor_segment[48:52] + sensor_segment[56:60]
+					TLval = sensor_segment[36:40] + sensor_segment[44:48] + sensor_segment[52:56] + sensor_segment[60:64]
 
-										#Averaging
-										BRavg = sum(BRval)/16
-										BLavg = sum(BLval)/16
-										TRavg = sum(TRval)/16
-										TLavg = sum(TLval)/16
+					#Averaging
+					BRavg = sum(BRval)/16
+					BLavg = sum(BLval)/16
+					TRavg = sum(TRval)/16
+					TLavg = sum(TLval)/16
 
-										print "Bottom Right: " + str(BRavg)
-										print "Bottom Left: " + str(BLavg)
-										print "Top Right: " + str(TRavg)
-										print "Top Left: " + str(TLavg)
+					print "Bottom Right: " + str(BRavg)
+					print "Bottom Left: " + str(BLavg)
+					print "Top Right: " + str(TRavg)
+					print "Top Left: " + str(TLavg)
 
-										#print "I am here!"
-										bottomRightStatus = False
-										bottomLeftStatus = False
-										topRightStatus = False
-										topLeftStatus = False
-										# If at most room temp => 0 means off
-										if (BRavg <= 40):
-												#print "BRmax Status: " + str(bottomRightStatus)
-												bottomRightStatus = False
-										else:
-												#print "BRmax Status: " + str(bottomRightStatus)
-												bottomRightStatus = True
+					#print "I am here!"
+					bottomRightStatus = False
+					bottomLeftStatus = False
+					topRightStatus = False
+					topLeftStatus = False
+					# If at most room temp => 0 means off
+					if (BRavg <= 40):
+						#print "BRmax Status: " + str(bottomRightStatus)
+						bottomRightStatus = False
+					else:
+						#print "BRmax Status: " + str(bottomRightStatus)
+						bottomRightStatus = True
 
-										if (BLavg <= 40):
-												#print "BLmax Status: " + str(bottomLeftStatus)
-												bottomLeftStatus = False
-										else:
-												bottomLeftStatus = True
-												#print "BLmax Status: " + str(bottomLeftStatus)
-										#print TRmax
-										if (TRavg <= 40):
-												#print "TRmax Status: " + str(topRightStatus)
-												topRightStatus = False
-										else:
-												#print "TRmax Status: " + str(topRightStatus)
-												topRightStatus = True
-										#print TLmax
-										if (TLavg <= 40):
-												#print "TLmax Status: " + str(topLeftStatus)
-												topLeftStatus = False
-										else:
-												#print "TLmax Status: " + str(topLeftStatus)
-												topLeftStatus = True
+					if (BLavg <= 40):
+						#print "BLmax Status: " + str(bottomLeftStatus)
+						bottomLeftStatus = False
+					else:
+						bottomLeftStatus = True
+						#print "BLmax Status: " + str(bottomLeftStatus)
+					#print TRmax
+					if (TRavg <= 40):
+						#print "TRmax Status: " + str(topRightStatus)
+						topRightStatus = False
+					else:
+						#print "TRmax Status: " + str(topRightStatus)
+						topRightStatus = True
+					#print TLmax
+					if (TLavg <= 40):
+						#print "TLmax Status: " + str(topLeftStatus)
+						topLeftStatus = False
+					else:
+						#print "TLmax Status: " + str(topLeftStatus)
+						topLeftStatus = True
 
-										#print "BRStatus " + str(bottomRightStatus)
-										#print "BLStatus " + str(bottomLeftStatus)
-										#print "TRStatus " + str(topRightStatus)
-										#print "TLStatus " + str(topLeftStatus)
-										print "forming data"
-										self.StoveDataTime = str(int(time.time()))
+					#print "BRStatus " + str(bottomRightStatus)
+					#print "BLStatus " + str(bottomLeftStatus)
+					#print "TRStatus " + str(topRightStatus)
+					#print "TLStatus " + str(topLeftStatus)
+					print "forming data"
+					self.StoveDataTime = str(int(time.time()))
 						
-										data = {
-												"StoveID": "StratosStove", # MAC address of xbee module?
-												"timestamp": str(int(time.time())),
-												"topLeft": str(topLeftStatus),
-												"topRight": str(topRightStatus),
-												"bottomLeft": str(bottomLeftStatus),
-												"bottomRight": str(bottomRightStatus)
-										}
+					data = {
+						"StoveID": "StratosStove", # MAC address of xbee module?
+						"timestamp": str(int(time.time())),
+						"topLeft": str(topLeftStatus),
+						"topRight": str(topRightStatus),
+						"bottomLeft": str(bottomLeftStatus),
+						"bottomRight": str(bottomRightStatus)
+					}
 
-										print "Now printing data"
-										print str(data)
-										self.StoveData = str(data)
-										#print self.StoveData
+					print "Now printing data"
+					print str(data)
+					self.StoveData = str(data)
+					#print self.StoveData
 
-								# Door sent messages on dest_endpt xBB
-								elif data["dest_endpoint"] == '\xBB':
-										print "**********************GOT DOOR STATUS*****************************"
-										print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
-										print "ALERT! Needs work"
-										#print data["source_addr_long"]
-										door_id = str([ hex(ord(x)) for x in data["source_addr_long"] ])
-										#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
-										door_status = str(data["rf_data"])
-										print data("rf_data")
-										self.DoorDataTime = str(int(time.time()))
-										# if "LOCKED" in door_status:        -- This will still be true even if the message says "UNLOCKED"
-										if 'UNLOCKED' in door_status.split()   # Use this instead
-										data = {
-												"DoorID": door_id, # MAC address of xbee module?
-												"timestamp": str(int(time.time())),
-												"DoorStatus": "True"
-												}  
-										else:
-												data = {
-												"DoorID": door_id, # MAC address of xbee module?
-												"timestamp": str(int(time.time())),
-												"DoorStatus": "False"
-												}  
-										self.DoorData = str(data)
+				# Door sent messages on dest_endpt xBB
+				elif data["dest_endpoint"] == '\xBB':
+					print "**********************GOT DOOR STATUS*****************************"
+					print "MAC:" + str([ hex(ord(x)) for x in data["source_addr_long"] ])
+					print "ALERT! Needs work"
+					#print data["source_addr_long"]
+					door_id = str([ hex(ord(x)) for x in data["source_addr_long"] ])
+					#print "MAC:" + ''.join(data["source_addr_long"]).encode('utf8')
+					door_status = str(data["rf_data"])
+					print data("rf_data")
+					self.DoorDataTime = str(int(time.time()))
+					# if "LOCKED" in door_status:        -- This will still be true even if the message says "UNLOCKED"
+					if 'UNLOCKED' in door_status.split()   # Use this instead
+						data = {
+							"DoorID": door_id, # MAC address of xbee module?
+							"timestamp": str(int(time.time())),
+							"DoorStatus": "True"
+						}  
+					else:
+						data = {
+							"DoorID": door_id, # MAC address of xbee module?
+							"timestamp": str(int(time.time())),
+							"DoorStatus": "False"
+						}  
+						
+					self.DoorData = str(data)
 
-								else:
-								        print "StratOs does not support this dest_endpoint yet"
+				else:
+					print "StratOs does not support this dest_endpoint yet"
 				
                         # ZDO Responses (Profile = 0x0000)
                         elif data["profile"]=='\x00\x00': 
@@ -363,7 +364,7 @@ class StratOsXBee(object):
                                         # ONLY SAVE VALUES IF THERE ARE ENDPTS AND MATCH MAC !!!
                                         if numendpts != []:
                                                 lastendpt = data["rf_data"][-1]
-                                                for elem in self.ComponentsList:
+                                               	for elem in self.ComponentsList:
                                                         if elem['MAC'] == data["source_addr_long"]:
                                                                 if transnum == 0x2:
                                                                         elem["HAEndpt"] = lastendpt
@@ -685,8 +686,8 @@ class StratOsXBee(object):
                         self.HAturnLightON( self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'] )
                         
                         time.sleep(1)
-				else:
-						print "No connected light bulb"
+		else:
+			print "No connected light bulb"
                         
         def StratOsLightOFF(self, num = 0):
                 if len(self.LightsList) != 0:
@@ -696,8 +697,8 @@ class StratOsXBee(object):
                         self.HAturnLightOFF( self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'] )
                         
                         time.sleep(1)
-				else:
-						print "No connected light bulb"				
+		else:
+			print "No connected light bulb"				
         
         def StratOsLightTOGGLE(self, num = 0):
                 if len(self.LightsList) != 0:
@@ -707,8 +708,8 @@ class StratOsXBee(object):
                         self.HAturnLightTOGGLE( self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'] )
                         
                         time.sleep(1)
-				else:
-						print "No connected door lock"
+		else:
+			print "No connected door lock"
 						
         def StratOsDoorON(self, num = 0):
                 if len(self.DoorList) != 0:
@@ -723,8 +724,8 @@ class StratOsXBee(object):
                         )
                         
                         time.sleep(1)  
-				else:
-						print "No connected door lock"						
+		else:
+			print "No connected door lock"						
                         
         def StratOsDoorOFF(self, num = 0):
                 if len(self.DoorList) != 0:
@@ -739,15 +740,15 @@ class StratOsXBee(object):
                         )
                         
                         time.sleep(1)                           
-				else:
-						print "No connected door lock"		
+		else:
+			print "No connected door lock"		
 
-		def StratOsGetLightStatus(self, num = 0):
-				if len(self.DoorList) != 0:
-						HAgetLightStatus(self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'])
-						time.sleep(1)
-				else:
-						print "No connected light bulb"				
+	def StratOsGetLightStatus(self, num = 0):
+		if len(self.DoorList) != 0:
+			HAgetLightStatus(self.LightsList[num]['MAC'], self.LightsList[num]['HAEndpt'])
+			time.sleep(1)
+		else:
+			print "No connected light bulb"				
                         
         
         
